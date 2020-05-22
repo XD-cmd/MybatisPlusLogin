@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.swjd.mapper.CustomerMapper">
+
+    <select id="getList" resultType="com.swjd.bean.Customer">
+        SELECT
+	customer.customerId,
+	customer.customerName,
+	customer.customerUserId,
+	(
+		SELECT
+			u.realname
+		FROM
+			USER u
+		WHERE
+			customer.customerUserId = u.uid
+	) AS customerUserName,
+	customer.customerCreateId,
+	(
+		SELECT
+			dict.dictItemName
+		FROM
+			dict
+		WHERE
+			dict.dictType = 002
+		AND dict.dictItemCode = customer.customerSourse
+	) AS customerSourseDict,
+	(
+		SELECT
+			dict.dictItemName
+		FROM
+			dict
+		WHERE
+			dict.dictType = 001
+		AND dict.dictItemCode = customer.customerIndustry
+	) AS customerIndustryDict,
+	customer.customerPhone,
+	customer.customerAddress,
+	customer.customerDate
+FROM
+	customer
+    </select>
+</mapper>
